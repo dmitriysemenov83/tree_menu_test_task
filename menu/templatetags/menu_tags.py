@@ -1,52 +1,42 @@
 from django import template
 
-from menu.models import Menu, MenuItem
+from menu.models import MenuItem, Menu
 
 register = template.Library()
-
 
 @register.inclusion_tag('menu/draw_menu.html', takes_context=True)
 def draw_menu(context, menu_name):
     request = context['request']
-    current_path = request.path  # Получаем текущий URL
+    current_path = request.path
 
-    # Получаем все пункты меню за один запрос
     try:
         menu = Menu.objects.get(name=menu_name)
     except Menu.DoesNotExist:
         return {'menu_tree': []}
 
-    menu_items = MenuItem.objects.filter(menu=menu).select_related('parent').order_by('id')
+    items = list(MenuItem.objects.filter(menu=menu).select_related('parent'))
+    nodes = {item.id: {"item": item, "children": [], "open": False, "active": False} for item in items}
 
-    # Строим дерево в памяти
-    items_dict = {item.id: {'item': item, 'children': [], 'open': False, 'active': False} for item in menu_items}
+    root_nodes = []
 
-    root_items = []
-
-    for item in menu_items:
+    # построим дерево
+    for node in nodes.values():
+        item = node['item']
         if item.parent_id:
-            items_dict[item.parent_id]['children'].append(items_dict[item.id])
+            nodes[item.parent_id]["children"].append(node)
         else:
-            root_items.append(items_dict[item.id])
+            root_nodes.append(node)
 
-    # Ищем активный элемент
-    active_item = None
-    for item in items_dict.values():
-        if item['item'].get_absolute_url() == current_path:
-            item['active'] = True
-            active_item = item
-            break
+    # найдём активный путь
+    for node in nodes.values():
+        if node['item'].get_absolute_url() == current_path:
+            node['active'] = True
+            # раскрыть родителей
+            parent = node['item'].parent
+            while parent:
+                parent_node = nodes.get(parent.id)
+                if parent_node:
+                    parent_node['open'] = True
+                parent = parent.parent
 
-    # Помечаем всех родителей активного элемента как открытые
-    def mark_open(item):
-        parent = item['item'].parent
-        if parent and parent.id in items_dict:
-            items_dict[parent.id]['open'] = True
-            mark_open(items_dict[parent.id])
-
-    if active_item:
-        mark_open(active_item)
-
-    return {
-        'menu_tree': root_items,
-    }
+    return {'menu_tree': root_nodes}

@@ -1,0 +1,75 @@
+[
+{
+  "model": "menu.menu",
+  "pk": 1,
+  "fields": {
+    "name": "main_menu"
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 1,
+  "fields": {
+    "menu": 1,
+    "title": "Главная",
+    "url": "/",
+    "named_url": "home",
+    "parent": null
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 2,
+  "fields": {
+    "menu": 1,
+    "title": "О нас",
+    "url": "/about/",
+    "named_url": null,
+    "parent": null
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 3,
+  "fields": {
+    "menu": 1,
+    "title": "Продукты",
+    "url": "/products/",
+    "named_url": null,
+    "parent": null
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 4,
+  "fields": {
+    "menu": 1,
+    "title": "Ноутбуки",
+    "url": "/products/laptops/",
+    "named_url": null,
+    "parent": 3
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 5,
+  "fields": {
+    "menu": 1,
+    "title": "Смартфоны",
+    "url": "/products/phones/",
+    "named_url": null,
+    "parent": 3
+  }
+},
+{
+  "model": "menu.menuitem",
+  "pk": 6,
+  "fields": {
+    "menu": 1,
+    "title": "Контакты",
+    "url": "/contacts/",
+    "named_url": null,
+    "parent": null
+  }
+}
+]

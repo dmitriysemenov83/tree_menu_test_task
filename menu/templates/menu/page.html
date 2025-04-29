@@ -1,0 +1,7 @@
+{% extends 'menu/base.html' %}
+
+{% block title %}Страница: {{ slug }}{% endblock %}
+
+{% block content %}
+    <h2>Вы на странице: /{{ slug }}{% if subslug %}/{{ subslug }}{% endif %}</h2>
+{% endblock %}

@@ -7,6 +7,9 @@ def home_view(request):
 
 
 def test_view(request, slug, subslug=None):
-    return HttpResponse(f"<h2>Вы на странице: /{slug}/{subslug or ''}</h2>")
+    return render(request, 'menu/page.html', {
+        'slug': slug,
+        'subslug': subslug,
+    })
 
 
