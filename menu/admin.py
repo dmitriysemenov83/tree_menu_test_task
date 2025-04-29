@@ -1,6 +1,9 @@
 from django.contrib import admin
 from menu.models import Menu, MenuItem
 
+admin.site.site_header = 'Панель управления'
+admin.site.index_title = 'Администрирование'
+
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):

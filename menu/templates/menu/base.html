@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Моё меню{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Сайт с древовидным меню</h1>
+        {% load menu_tags %}
+        {% draw_menu 'main_menu' %}
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Контент страницы -->
+        {% endblock %}
+    </main>
+</body>
+</html>

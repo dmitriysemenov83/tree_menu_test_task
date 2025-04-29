@@ -1,0 +1,14 @@
+<li>
+    <a href="{{ node.item.get_absolute_url }}" {% if node.active %}class="active"{% endif %}>
+        {{ node.item.title }}
+    </a>
+
+    {% if node.children and node.open or node.active %}
+
+        <ul>
+            {% for child in node.children %}
+                {% include 'menu/menu_node.html' with node=child %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</li>
